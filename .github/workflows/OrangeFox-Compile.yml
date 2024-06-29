@@ -108,13 +108,6 @@ jobs:
         if_true: export FOX_VERSION="${{ github.event.inputs.ORANGEFOX_VERSION }}"
         if_false: echo $FOX_VERSION
 
-    - name: Dowload latest Magisk #Dowload Magisk if is dont found
-      uses: robinraju/release-downloader@v1.8
-      id: magisk_dowload
-      with:
-        latest: true
-        fileName: "*.apk"
-
     - name: Set Release name
       id: release_name
       run: |
@@ -126,15 +119,8 @@ jobs:
         set +e
         source build/envsetup.sh
         ${{ steps.fox_release.outputs.value }}
+        export ALLOW_MISSING_DEPENDENCIES=true
         set -e
-        if [ -f ${GITHUB_WORKSPACE}/Magisk/Magisk-v26.3.zip ]; then
-          export FOX_USE_SPECIFIC_MAGISK_ZIP=${GITHUB_WORKSPACE}/magisk/Magisk-v26.3.zip
-        else
-          cd ${GITHUB_WORKSPACE}/Magisk/ 
-          ${{ steps.magisk.outputs.value }}
-          mv Magisk.*.apk Magisk.zip
-          cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH }}
-          export FOX_USE_SPECIFIC_MAGISK_ZIP=${GITHUB_WORKSPACE}/magisk/Magisk.zip
         fi
         ${{ steps.fox_branch.outputs.value }}
 
