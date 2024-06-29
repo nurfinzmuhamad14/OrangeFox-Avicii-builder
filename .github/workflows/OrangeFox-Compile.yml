@@ -17,8 +17,6 @@ on:
         options:
         - 12.1
         - 11.0
-        - 10.0
-        - 9.0
       DEVICE_TREE:
         description: 'Custom Recovery Tree'
         required: true
@@ -26,19 +24,19 @@ on:
       DEVICE_TREE_BRANCH:
         description: 'Custom Recovery Tree Branch'
         required: true
-        default: 'android-12.1'
+        default: 'android-11'
       DEVICE_PATH:
         description: 'Specify your device path.'
         required: true
-        default: 'device/oneplus/avicii'
+        default: 'device/realme/RMX2195'
       ORANGEFOX_VERSION:
         description: 'Specify your OrangeFox Version'
         required: true
-        default: 'R11_x' #If not change use the vendorsetup one
+        default: 'R11_C15R' #If not change use the vendorsetup one
       DEVICE_NAME:
         description: 'Specify your Device Codename.'
         required: true
-        default: 'avicii'
+        default: 'RMX2195'
       BUILD_TARGET:
         description: 'Specify your Build Target'
         required: true
@@ -120,8 +118,9 @@ jobs:
         source build/envsetup.sh
         ${{ steps.fox_release.outputs.value }}
         export ALLOW_MISSING_DEPENDENCIES=true
+        export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
+        export LC_ALL="C"
         set -e
-        fi
         ${{ steps.fox_branch.outputs.value }}
 
     - name: Set Build Date # For Build Date Info, currently using Asia/Manila
